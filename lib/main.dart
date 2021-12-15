@@ -6,10 +6,12 @@ import 'package:flutter_blue/flutter_blue.dart';
 import '../widgets/widget.dart';
 
 void main() {
-  runApp(FlutterBlueApp());
+  runApp(const FlutterBlueApp());
 }
 
 class FlutterBlueApp extends StatelessWidget {
+  const FlutterBlueApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +43,7 @@ class BluetoothOffScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(
+            const Icon(
               Icons.bluetooth_disabled,
               size: 200.0,
               color: Colors.white54,
@@ -61,6 +63,8 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class FindDevicesScreen extends StatelessWidget {
+  const FindDevicesScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,7 +227,7 @@ class DeviceScreen extends StatelessWidget {
                   text = snapshot.data.toString().substring(21).toUpperCase();
                   break;
               }
-              return FlatButton(
+              return TextButton(
                   onPressed: onPressed,
                   child: Text(
                     text,
