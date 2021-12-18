@@ -9,6 +9,8 @@ import '../widgets/descriptor_tile.dart';
 class DeviceScreen extends StatelessWidget {
   const DeviceScreen({Key? key, required this.device}) : super(key: key);
 
+  static const routeName = "/device";
+
   final BluetoothDevice device;
 
   List<int> _getRandomBytes() {

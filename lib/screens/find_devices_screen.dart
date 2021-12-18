@@ -9,6 +9,8 @@ import '../widgets/scan_result_tile.dart';
 class FindDevicesScreen extends StatelessWidget {
   const FindDevicesScreen({Key? key}) : super(key: key);
 
+  static const routeName = "/find-device";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
