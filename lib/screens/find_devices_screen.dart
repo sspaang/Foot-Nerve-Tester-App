@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:foot_nerve_tester_app/screens/select_foot_side_screen.dart';
 
 import './device_screen.dart';
 
@@ -64,7 +65,7 @@ class FindDevicesScreen extends StatelessWidget {
                           onTap: () => Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
                             r.device.connect();
-                            return DeviceScreen(device: r.device);
+                            return SelectFootSideScreen(device: r.device);
                           })),
                         ),
                       )
