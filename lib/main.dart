@@ -30,7 +30,6 @@ class FlutterBlueApp extends StatelessWidget {
           error: Colors.red,
           onError: Colors.white,
         ),
-        primaryColor: Colors.yellow,
         fontFamily: 'Prompt',
       ),
       color: Colors.lightBlue,
