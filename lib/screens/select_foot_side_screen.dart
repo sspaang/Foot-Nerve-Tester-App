@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:foot_nerve_tester_app/screens/test_left_side_screen.dart';
+import 'package:foot_nerve_tester_app/screens/test_right_side_screen.dart';
 import 'package:foot_nerve_tester_app/widgets/connection_app_bar.dart';
 
 class SelectFootSideScreen extends StatelessWidget {
@@ -13,10 +15,8 @@ class SelectFootSideScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    const rightFootPrint =
-        Image(image: AssetImage('assets/images/right-footprint.png'));
-    const leftFootPrint =
-        Image(image: AssetImage('assets/images/left-footprint.png'));
+    const rightFootPrint = AssetImage('assets/images/right-footprint.png');
+    const leftFootPrint = AssetImage('assets/images/left-footprint.png');
 
     return Scaffold(
       appBar: ConnectionAppBar(
@@ -37,19 +37,27 @@ class SelectFootSideScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () => print('left foot'),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return TestLeftSideScreen(device: device);
+                    }),
+                  ),
                   child: Container(
                     alignment: Alignment.center,
-                    child: leftFootPrint,
+                    child: const Image(image: leftFootPrint),
                     height: deviceSize.height * 0.15,
                     width: deviceSize.width * 0.25,
                   ),
                 ),
                 InkWell(
-                  onTap: () => print('right foot'),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return TestRightSideScreen(device: device);
+                    }),
+                  ),
                   child: Container(
                     alignment: Alignment.center,
-                    child: rightFootPrint,
+                    child: const Image(image: rightFootPrint),
                     height: deviceSize.height * 0.15,
                     width: deviceSize.width * 0.25,
                   ),

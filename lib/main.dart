@@ -23,7 +23,7 @@ class FlutterBlueApp extends StatelessWidget {
           secondary: Colors.grey,
           secondaryVariant: Colors.grey,
           onSecondary: Colors.grey,
-          background: Colors.grey,
+          background: Colors.white,
           onBackground: Colors.grey,
           surface: Colors.grey,
           onSurface: Colors.grey,
