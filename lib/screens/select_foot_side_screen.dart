@@ -11,6 +11,8 @@ class SelectFootSideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+
     const rightFootPrint =
         Image(image: AssetImage('assets/images/right-footprint.png'));
     const leftFootPrint =
@@ -26,7 +28,7 @@ class SelectFootSideScreen extends StatelessWidget {
           children: [
             const Text(
               "เลือกเท้าข้างที่จะทำการทดสอบ",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 24),
             ),
             const SizedBox(
               height: 20,
@@ -39,17 +41,17 @@ class SelectFootSideScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     child: leftFootPrint,
-                    height: 100,
-                    width: 80,
+                    height: deviceSize.height * 0.15,
+                    width: deviceSize.width * 0.25,
                   ),
                 ),
                 InkWell(
-                  onTap: () => print('left foot'),
+                  onTap: () => print('right foot'),
                   child: Container(
                     alignment: Alignment.center,
                     child: rightFootPrint,
-                    height: 100,
-                    width: 80,
+                    height: deviceSize.height * 0.15,
+                    width: deviceSize.width * 0.25,
                   ),
                 ),
               ],

@@ -15,7 +15,22 @@ class FlutterBlueApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.white70,
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Colors.yellow,
+          onPrimary: Colors.black,
+          primaryVariant: Colors.grey,
+          secondary: Colors.grey,
+          secondaryVariant: Colors.grey,
+          onSecondary: Colors.grey,
+          background: Colors.grey,
+          onBackground: Colors.grey,
+          surface: Colors.grey,
+          onSurface: Colors.grey,
+          error: Colors.red,
+          onError: Colors.white,
+        ),
+        primaryColor: Colors.yellow,
         fontFamily: 'Prompt',
       ),
       color: Colors.lightBlue,
