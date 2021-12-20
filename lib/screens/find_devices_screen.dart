@@ -41,10 +41,11 @@ class FindDevicesScreen extends StatelessWidget {
                                     BluetoothDeviceState.connected) {
                                   return ElevatedButton(
                                     child: const Text('OPEN'),
-                                    onPressed: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
+                                    onPressed: () => Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
                                             builder: (context) =>
-                                                DeviceScreen(device: d))),
+                                                SelectFootSideScreen(
+                                                    device: d))),
                                   );
                                 }
                                 return Text(snapshot.data.toString());
@@ -62,11 +63,12 @@ class FindDevicesScreen extends StatelessWidget {
                       .map(
                         (r) => ScanResultTile(
                           result: r,
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            r.device.connect();
-                            return SelectFootSideScreen(device: r.device);
-                          })),
+                          onTap: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) {
+                              r.device.connect();
+                              return SelectFootSideScreen(device: r.device);
+                            }),
+                          ),
                         ),
                       )
                       .toList(),

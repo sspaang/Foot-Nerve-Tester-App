@@ -7,7 +7,7 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BluetoothDevice device;
 
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => const Size.fromHeight(50);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: Theme.of(context)
                       .primaryTextTheme
                       .button
-                      ?.copyWith(color: Colors.white),
+                      ?.copyWith(color: Colors.black),
                 ));
           },
         )
