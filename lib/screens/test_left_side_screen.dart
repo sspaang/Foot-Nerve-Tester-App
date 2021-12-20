@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../widgets/connection_app_bar.dart';
+import '../widgets/circle_image.dart';
 
 class TestLeftSideScreen extends StatelessWidget {
   const TestLeftSideScreen({Key? key, required this.device}) : super(key: key);
@@ -31,24 +32,8 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
+                  CircleImage(image: footSpot),
+                  CircleImage(image: footSpot),
                 ],
               ),
             ),
@@ -67,24 +52,8 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
+                  CircleImage(image: footSpot),
+                  CircleImage(image: footSpot),
                 ],
               ),
             ),

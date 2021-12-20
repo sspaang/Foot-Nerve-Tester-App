@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../widgets/connection_app_bar.dart';
+import '../widgets/circle_image.dart';
 
 class TestRightSideScreen extends StatelessWidget {
   const TestRightSideScreen({Key? key, required this.device}) : super(key: key);
@@ -9,7 +10,10 @@ class TestRightSideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const footSpot = AssetImage('assets/images/foot-spot.png');
+    const firstFootSpot = AssetImage('assets/images/right-first-spot.png');
+    const secondFootSpot = AssetImage('assets/images/right-second-spot.png');
+    const thirdFootSpot = AssetImage('assets/images/right-third-spot.png');
+    const fourthFootSpot = AssetImage('assets/images/right-fourth-spot.png');
 
     return Scaffold(
       appBar: ConnectionAppBar(
@@ -31,24 +35,8 @@ class TestRightSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
+                  CircleImage(image: firstFootSpot),
+                  CircleImage(image: secondFootSpot),
                 ],
               ),
             ),
@@ -67,24 +55,8 @@ class TestRightSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.yellow,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      foregroundImage: footSpot,
-                    ),
-                  ),
+                  CircleImage(image: thirdFootSpot),
+                  CircleImage(image: fourthFootSpot),
                 ],
               ),
             ),
