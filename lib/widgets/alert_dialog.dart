@@ -1,14 +1,20 @@
+import 'dart:async';
+import 'dart:convert' show utf8;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class AppAlertDialog extends StatelessWidget {
   const AppAlertDialog({
     Key? key,
+    required this.device,
     required this.title,
     required this.child,
     this.onCancel,
     this.onConfirm,
   }) : super(key: key);
 
+  final BluetoothDevice device;
   final Widget? child;
   final String? title;
   final Function? onCancel;

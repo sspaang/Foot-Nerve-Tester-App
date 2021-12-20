@@ -36,14 +36,16 @@ class TestRightSideScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
+                children: [
                   AppAlertDialog(
+                    device: device,
                     title: 'จุดที่ 1',
-                    child: CircleImage(image: firstFootSpot),
+                    child: const CircleImage(image: firstFootSpot),
                   ),
                   AppAlertDialog(
+                    device: device,
                     title: 'จุดที่ 2',
-                    child: CircleImage(image: secondFootSpot),
+                    child: const CircleImage(image: secondFootSpot),
                   ),
                 ],
               ),
@@ -68,14 +70,16 @@ class TestRightSideScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   AppAlertDialog(
+                    device: device,
                     title: 'จุดที่ 3',
-                    child: CircleImage(image: thirdFootSpot),
+                    child: const CircleImage(image: thirdFootSpot),
                   ),
                   AppAlertDialog(
+                    device: device,
                     title: 'จุดที่ 4',
-                    child: CircleImage(image: fourthFootSpot),
+                    child: const CircleImage(image: fourthFootSpot),
                   ),
                 ],
               ),
