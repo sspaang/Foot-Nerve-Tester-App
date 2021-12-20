@@ -11,7 +11,10 @@ class TestLeftSideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const footSpot = AssetImage('assets/images/foot-spot.png');
+    const firstFootSpot = AssetImage('assets/images/left-first-spot.png');
+    const secondFootSpot = AssetImage('assets/images/left-second-spot.png');
+    const thirdFootSpot = AssetImage('assets/images/left-third-spot.png');
+    const fourthFootSpot = AssetImage('assets/images/left-fourth-spot.png');
 
     return Scaffold(
       appBar: ConnectionAppBar(
@@ -33,8 +36,8 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  CircleImage(image: footSpot),
-                  CircleImage(image: footSpot),
+                  CircleImage(image: firstFootSpot),
+                  CircleImage(image: secondFootSpot),
                 ],
               ),
             ),
@@ -43,8 +46,14 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  Text('จุดที่ 1'),
-                  Text('จุดที่ 2'),
+                  Text(
+                    'จุดที่ 1',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'จุดที่ 2',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),
@@ -53,8 +62,8 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  CircleImage(image: footSpot),
-                  CircleImage(image: footSpot),
+                  CircleImage(image: thirdFootSpot),
+                  CircleImage(image: fourthFootSpot),
                 ],
               ),
             ),
@@ -63,8 +72,14 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  Text('จุดที่ 3'),
-                  Text('จุดที่ 4'),
+                  Text(
+                    'จุดที่ 3',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'จุดที่ 4',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),
