@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:foot_nerve_tester_app/screens/select_foot_side_screen.dart';
 
 import './screens/bluetooth_off_screen.dart';
 import './screens/find_devices_screen.dart';
