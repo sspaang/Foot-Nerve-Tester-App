@@ -4,7 +4,7 @@ import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
-class AppAlertDialog extends StatelessWidget {
+class AppAlertDialog extends StatefulWidget {
   const AppAlertDialog({
     Key? key,
     required this.device,
@@ -21,17 +21,22 @@ class AppAlertDialog extends StatelessWidget {
   final Function? onConfirm;
 
   @override
+  State<AppAlertDialog> createState() => _AppAlertDialogState();
+}
+
+class _AppAlertDialogState extends State<AppAlertDialog> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('ทำการทดสอบ $title'),
+          title: Text('ทำการทดสอบ ${widget.title}'),
           actions: [
             TextButton(
               onPressed: () {
                 print('ยกเลิก');
-                onCancel;
+                widget.onCancel;
                 Navigator.pop(context);
               },
               child: const Text('ยกเลิก'),
@@ -40,7 +45,7 @@ class AppAlertDialog extends StatelessWidget {
             TextButton(
               onPressed: () {
                 print('confirm');
-                onConfirm;
+                widget.onConfirm;
                 Navigator.pop(context);
               },
               child: const Text('ตกลง'),
@@ -49,7 +54,7 @@ class AppAlertDialog extends StatelessWidget {
           ],
         ),
       ),
-      child: child,
+      child: widget.child,
     );
   }
 }
