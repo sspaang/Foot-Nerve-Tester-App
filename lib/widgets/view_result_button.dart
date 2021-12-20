@@ -7,7 +7,10 @@ class ResultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => print('ดูผลการทดสอบ'),
-      child: const Text('ดูผลการทดสอบ'),
+      child: const Text(
+        'ดูผลการทดสอบ',
+        style: TextStyle(fontSize: 16),
+      ),
     );
   }
 }
