@@ -3,6 +3,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import '../widgets/connection_app_bar.dart';
 import '../widgets/circle_image.dart';
 import '../widgets/view_result_button.dart';
+import '../widgets/alert_dialog.dart';
 
 class TestLeftSideScreen extends StatelessWidget {
   const TestLeftSideScreen({Key? key, required this.device}) : super(key: key);
@@ -36,8 +37,14 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  CircleImage(image: firstFootSpot),
-                  CircleImage(image: secondFootSpot),
+                  AppAlertDialog(
+                    title: 'จุดที่ 1',
+                    child: CircleImage(image: firstFootSpot),
+                  ),
+                  AppAlertDialog(
+                    title: 'จุดที่ 2',
+                    child: CircleImage(image: secondFootSpot),
+                  ),
                 ],
               ),
             ),
@@ -62,8 +69,14 @@ class TestLeftSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  CircleImage(image: thirdFootSpot),
-                  CircleImage(image: fourthFootSpot),
+                  AppAlertDialog(
+                    title: 'จุดที่ 3',
+                    child: CircleImage(image: thirdFootSpot),
+                  ),
+                  AppAlertDialog(
+                    title: 'จุดที่ 4',
+                    child: CircleImage(image: fourthFootSpot),
+                  ),
                 ],
               ),
             ),
