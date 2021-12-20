@@ -46,8 +46,14 @@ class TestRightSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  Text('จุดที่ 1'),
-                  Text('จุดที่ 2'),
+                  Text(
+                    'จุดที่ 1',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'จุดที่ 2',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),
@@ -66,8 +72,14 @@ class TestRightSideScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: const [
-                  Text('จุดที่ 3'),
-                  Text('จุดที่ 4'),
+                  Text(
+                    'จุดที่ 3',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'จุดที่ 4',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),
