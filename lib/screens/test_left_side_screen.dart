@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../widgets/connection_app_bar.dart';
 import '../widgets/circle_image.dart';
+import '../widgets/view_result_button.dart';
 
 class TestLeftSideScreen extends StatelessWidget {
   const TestLeftSideScreen({Key? key, required this.device}) : super(key: key);
@@ -67,6 +68,7 @@ class TestLeftSideScreen extends StatelessWidget {
                 ],
               ),
             ),
+            const ResultButton(),
           ],
         ),
       ),
