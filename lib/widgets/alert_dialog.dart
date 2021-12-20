@@ -10,7 +10,7 @@ class AppAlertDialog extends StatefulWidget {
     required this.device,
     required this.title,
     required this.child,
-    required this.command,
+    this.command,
   }) : super(key: key);
 
   final BluetoothDevice device;
@@ -33,7 +33,36 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   var notifyValue;
 
   writeDataAndWaitForRespond(int command) async {
-    var command = widget.command!;
+    final command;
+
+    switch (widget.title) {
+      case 'จุดที่ 1':
+        {
+          command = 0x31;
+        }
+        break;
+      case 'จุดที่ 2':
+        {
+          command = 0x32;
+        }
+        break;
+      case 'จุดที่ 3':
+        {
+          command = 0x33;
+        }
+        break;
+      case 'จุดที่ 4':
+        {
+          command = 0x34;
+        }
+        break;
+      default:
+        {
+          command = 0x30;
+        }
+        break;
+    }
+
     List<BluetoothService> services = await widget.device.discoverServices();
     services.forEach((service) async {
       if (service.uuid.toString() == serviceUUID) {
@@ -68,7 +97,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        writeDataAndWaitForRespond(widget.command!);
         showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -87,6 +115,11 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                 onPressed: () {
                   print('confirm');
                   writeDataAndWaitForRespond(0x30);
+                  if (isReady!) {
+                    print('Motor is working');
+                  } else {
+                    print('Motor is ready');
+                  }
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),

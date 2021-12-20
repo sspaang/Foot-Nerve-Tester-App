@@ -39,7 +39,7 @@ class TestLeftSideScreen extends StatelessWidget {
                 children: [
                   AppAlertDialog(
                     device: device,
-                    command: 0x31,
+                    command: 1,
                     title: 'จุดที่ 1',
                     child: const CircleImage(image: firstFootSpot),
                   ),
