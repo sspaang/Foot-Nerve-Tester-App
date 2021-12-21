@@ -3,6 +3,7 @@ import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class AppAlertDialog extends StatefulWidget {
   const AppAlertDialog({
@@ -10,7 +11,7 @@ class AppAlertDialog extends StatefulWidget {
     required this.device,
     required this.title,
     required this.child,
-    this.command,
+    required this.command,
   }) : super(key: key);
 
   final BluetoothDevice device;
@@ -28,10 +29,17 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       "beb5483e-36e1-4688-b7f5-ea07361b26a8";
   static const String characteristicUUIDWrite =
       "828917c1-ea55-4d4a-a66e-fd202cea0645";
-  bool? isReady;
-  Stream<List<int>>? stream;
-  var notifyValue;
-  var command;
+  String? notifyValue;
+  int? command;
+  bool? isWorking;
+
+  static const loadingSpin = AssetImage('assets/images/downloading-spin.gif');
+
+  @override
+  void initState() {
+    super.initState();
+    isWorking = false;
+  }
 
   writeDataAndWaitForNotification(int command) async {
     List<BluetoothService> services = await widget.device.discoverServices();
@@ -42,18 +50,17 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
           if (characteristic.uuid.toString() == characteristicUUIDNotify) {
             await characteristic.setNotifyValue(true);
             characteristic.value.listen((value) {
-              notifyValue = value;
-              print('Notify value: $notifyValue'); // _Uint8ArrayView
+              if (notifyValue != notifyValue) {
+                notifyValue = _dataParser(value);
+                print('Notify value: $notifyValue');
+              }
+
+              if (notifyValue == '1') {
+                setState(() {
+                  isWorking = true;
+                });
+              }
             });
-            if (notifyValue == [48]) {
-              setState(() {
-                isReady = true;
-              });
-            } else {
-              setState(() {
-                isReady = false;
-              });
-            }
           } else if (characteristic.uuid.toString() ==
               characteristicUUIDWrite) {
             await characteristic.write([command]);
@@ -62,6 +69,72 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         }
       }
     });
+  }
+
+  String _dataParser(dataFromDevice) {
+    return utf8.decode(dataFromDevice);
+  }
+
+  _showWorkingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(child: Text('กรุณารอสักครู่')),
+          content: Container(
+            width: 60,
+            height: 60,
+            child: const Image(
+              image: loadingSpin,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _showSelectTestingResultDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('คุณรู้สึกหรือไม่?'),
+          content: Container(
+            width: 60,
+            height: 60,
+            child: const Image(
+              image: loadingSpin,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                print('ไม่รู้สึก');
+                Navigator.pop(context);
+              },
+              child: const Text('ไม่รู้สึก'),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red,
+                primary: Colors.white,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                print('รู้สึก');
+                Navigator.pop(context);
+              },
+              child: const Text('รู้สึก'),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.green,
+                primary: Colors.white,
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -76,10 +149,10 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
           barrierDismissible: false,
           builder: (BuildContext context) => AlertDialog(
             title: Text('ทำการทดสอบ ${widget.title}'),
+            content: const Text('กรุณาวางส้นเท้าลงบนไฟ LED ที่แสดง'),
             actions: [
               TextButton(
                 onPressed: () {
-                  print('ยกเลิก');
                   writeDataAndWaitForNotification(0x35);
                   Navigator.pop(context);
                 },
@@ -88,13 +161,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               ),
               TextButton(
                 onPressed: () {
-                  print('confirm');
                   writeDataAndWaitForNotification(0x30);
-                  if (isReady!) {
-                    print('Motor is working');
-                  } else {
-                    print('Motor is ready');
-                  }
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
