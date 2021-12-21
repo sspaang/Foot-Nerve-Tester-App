@@ -31,38 +31,9 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   bool? isReady;
   Stream<List<int>>? stream;
   var notifyValue;
+  var command;
 
   writeDataAndWaitForRespond(int command) async {
-    final command;
-
-    switch (widget.title) {
-      case 'จุดที่ 1':
-        {
-          command = 0x31;
-        }
-        break;
-      case 'จุดที่ 2':
-        {
-          command = 0x32;
-        }
-        break;
-      case 'จุดที่ 3':
-        {
-          command = 0x33;
-        }
-        break;
-      case 'จุดที่ 4':
-        {
-          command = 0x34;
-        }
-        break;
-      default:
-        {
-          command = 0x30;
-        }
-        break;
-    }
-
     List<BluetoothService> services = await widget.device.discoverServices();
     services.forEach((service) async {
       if (service.uuid.toString() == serviceUUID) {
@@ -97,8 +68,12 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (command != widget.command) {
+          writeDataAndWaitForRespond(widget.command!);
+        }
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) => AlertDialog(
             title: Text('ทำการทดสอบ ${widget.title}'),
             actions: [

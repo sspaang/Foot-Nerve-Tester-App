@@ -1,19 +1,43 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:foot_nerve_tester_app/screens/select_foot_side_screen.dart';
 
-import './device_screen.dart';
+import './select_foot_side_screen.dart';
 
 import '../widgets/scan_result_tile.dart';
 
-class FindDevicesScreen extends StatelessWidget {
+class FindDevicesScreen extends StatefulWidget {
   const FindDevicesScreen({Key? key}) : super(key: key);
 
   static const routeName = "/find-device";
 
   @override
+  State<FindDevicesScreen> createState() => _FindDevicesScreenState();
+}
+
+class _FindDevicesScreenState extends State<FindDevicesScreen> {
+  @override
   Widget build(BuildContext context) {
+    void _showConnectionAlertDialog() {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('กรุณาเชื่อมต่ออุปกรณ์ Foot Nerve Tester'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'ตกลง'),
+              child: const Text(
+                'ตกลง',
+                style: TextStyle(color: Colors.blue, fontSize: 16),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Find Devices'),
@@ -63,12 +87,18 @@ class FindDevicesScreen extends StatelessWidget {
                       .map(
                         (r) => ScanResultTile(
                           result: r,
-                          onTap: () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) {
-                              r.device.connect();
-                              return SelectFootSideScreen(device: r.device);
-                            }),
-                          ),
+                          onTap: () {
+                            if (r.device.name == 'Foot Nerve Tester') {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                                  r.device.connect();
+                                  return SelectFootSideScreen(device: r.device);
+                                }),
+                              );
+                            } else {
+                              _showConnectionAlertDialog();
+                            }
+                          },
                         ),
                       )
                       .toList(),
@@ -84,13 +114,17 @@ class FindDevicesScreen extends StatelessWidget {
         builder: (c, snapshot) {
           if (snapshot.data!) {
             return FloatingActionButton(
-              child: const Icon(Icons.stop),
+              child: const Icon(Icons.stop, color: Colors.white),
               onPressed: () => FlutterBlue.instance.stopScan(),
               backgroundColor: Colors.red,
             );
           } else {
             return FloatingActionButton(
-                child: const Icon(Icons.search),
+                backgroundColor: Colors.yellow,
+                child: const Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
                 onPressed: () => FlutterBlue.instance
                     .startScan(timeout: const Duration(seconds: 4)));
           }

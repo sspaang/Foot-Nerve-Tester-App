@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import '../screens/find_devices_screen.dart';
 
 class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ConnectionAppBar({Key? key, required this.device}) : super(key: key);
@@ -22,7 +23,11 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             String text;
             switch (snapshot.data) {
               case BluetoothDeviceState.connected:
-                onPressed = () => device.disconnect();
+                onPressed = () {
+                  device.disconnect();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const FindDevicesScreen()));
+                };
                 text = 'DISCONNECT';
                 break;
               case BluetoothDeviceState.disconnected:
