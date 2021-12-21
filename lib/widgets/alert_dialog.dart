@@ -33,7 +33,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   var notifyValue;
   var command;
 
-  writeDataAndWaitForRespond(int command) async {
+  writeDataAndWaitForNotification(int command) async {
     List<BluetoothService> services = await widget.device.discoverServices();
     services.forEach((service) async {
       if (service.uuid.toString() == serviceUUID) {
@@ -69,7 +69,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     return GestureDetector(
       onTap: () {
         if (command != widget.command) {
-          writeDataAndWaitForRespond(widget.command!);
+          writeDataAndWaitForNotification(widget.command!);
         }
         showDialog(
           context: context,
@@ -80,7 +80,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () {
                   print('ยกเลิก');
-                  writeDataAndWaitForRespond(0x35);
+                  writeDataAndWaitForNotification(0x35);
                   Navigator.pop(context);
                 },
                 child: const Text('ยกเลิก'),
@@ -89,7 +89,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () {
                   print('confirm');
-                  writeDataAndWaitForRespond(0x30);
+                  writeDataAndWaitForNotification(0x30);
                   if (isReady!) {
                     print('Motor is working');
                   } else {
