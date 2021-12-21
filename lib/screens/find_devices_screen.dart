@@ -89,12 +89,15 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                           result: r,
                           onTap: () {
                             if (r.device.name == 'Foot Nerve Tester') {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                                  r.device.connect();
-                                  return SelectFootSideScreen(device: r.device);
-                                }),
-                              );
+                              r.device.connect();
+                              Future.delayed(const Duration(seconds: 2), () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                    return SelectFootSideScreen(
+                                        device: r.device);
+                                  }),
+                                );
+                              });
                             } else {
                               _showConnectionAlertDialog();
                             }
