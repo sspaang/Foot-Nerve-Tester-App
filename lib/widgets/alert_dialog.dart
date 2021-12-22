@@ -25,14 +25,11 @@ class AppAlertDialog extends StatefulWidget {
 
 class _AppAlertDialogState extends State<AppAlertDialog> {
   static const String serviceUUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
-  static const String characteristicUUIDNotify =
-      "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-  static const String characteristicUUIDWrite =
-      "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
   int? command;
   bool? isFinised;
   Timer? _timer;
+  List<String> listenList = [];
 
   static const checkImage = AssetImage('assets/images/check.png');
 
@@ -53,24 +50,23 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       if (service.uuid.toString() == serviceUUID) {
         var characteristics = service.characteristics;
         for (BluetoothCharacteristic characteristic in characteristics) {
-          if (characteristic.uuid.toString() == characteristicUUIDNotify) {
+          if (characteristic.properties.notify) {
             await characteristic.setNotifyValue(true);
-            characteristic.value.listen(
-              (value) {
+            if (!listenList.contains(widget.device.id.toString())) {
+              listenList.add(widget.device.id.toString());
+              characteristic.value.listen((value) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
-              },
-            );
-            print('check notify status');
-            if (notifyValue == '1') {
-              _showWorkingDialog();
-            } else if (notifyValue == '0') {
-              _hideDialog();
-              _showSelectTestingResultDialog();
-              notifyValue = '-1';
+
+                if (notifyValue == '1') {
+                  _showWorkingDialog();
+                } else if (notifyValue == '0') {
+                  _hideDialog();
+                  _showSelectTestingResultDialog();
+                }
+              });
             }
-          } else if (characteristic.uuid.toString() ==
-              characteristicUUIDWrite) {
+          } else if (characteristic.properties.write) {
             var sendCommand = utf8.encode(command.toString());
             await characteristic.write(sendCommand);
             print('Value sent: $sendCommand');
