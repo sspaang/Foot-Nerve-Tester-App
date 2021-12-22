@@ -67,6 +67,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               });
             }
           } else if (characteristic.properties.write) {
+            // OR define characteristic uuid in CharacteristicUUIDWrite and
+            // else if (characteristic.uuid.toString() == CharacteristicUUIDWrite)
             var sendCommand = utf8.encode(command.toString());
             await characteristic.write(sendCommand);
             print('Value sent: $sendCommand');
