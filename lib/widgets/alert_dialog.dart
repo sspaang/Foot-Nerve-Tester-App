@@ -3,7 +3,7 @@ import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AppAlertDialog extends StatefulWidget {
   const AppAlertDialog({
@@ -32,6 +32,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   String? notifyValue;
   int? command;
   bool? isWorking;
+  Timer? _timer;
 
   static const loadingSpin = AssetImage('assets/images/downloading-spin.gif');
 
@@ -39,6 +40,12 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   void initState() {
     super.initState();
     isWorking = false;
+    EasyLoading.addStatusCallback((status) {
+      print('EasyLoading Status $status');
+      if (status == EasyLoadingStatus.dismiss) {
+        _timer?.cancel();
+      }
+    });
   }
 
   writeDataAndWaitForNotification(int command) async {
@@ -46,21 +53,22 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     services.forEach((service) async {
       if (service.uuid.toString() == serviceUUID) {
         var characteristics = service.characteristics;
-        for (var characteristic in characteristics) {
+        for (BluetoothCharacteristic characteristic in characteristics) {
           if (characteristic.uuid.toString() == characteristicUUIDNotify) {
             await characteristic.setNotifyValue(true);
-            characteristic.value.listen((value) {
-              if (notifyValue != notifyValue) {
+            characteristic.value.listen(
+              (value) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
-              }
 
-              if (notifyValue == '1') {
-                setState(() {
-                  isWorking = true;
-                });
-              }
-            });
+                if (notifyValue == '1') {
+                  _showWorkingDialog();
+                } else if (notifyValue == '0') {
+                  _hideDialog();
+                  _showSelectTestingResultDialog();
+                }
+              },
+            );
           } else if (characteristic.uuid.toString() ==
               characteristicUUIDWrite) {
             await characteristic.write([command]);
@@ -76,22 +84,23 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   }
 
   _showWorkingDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Center(child: Text('กรุณารอสักครู่')),
-          content: Container(
-            width: 60,
-            height: 60,
-            child: const Image(
-              image: loadingSpin,
-            ),
-          ),
-        );
-      },
-    );
+    EasyLoading.showProgress(0.3, status: 'เครื่องกำลังทำงาน');
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: const Center(child: Text('กรุณารอสักครู่')),
+    //       content: Container(
+    //         width: 60,
+    //         height: 60,
+    //         child: const Image(
+    //           image: loadingSpin,
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
   _showSelectTestingResultDialog() {
@@ -135,6 +144,10 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         );
       },
     );
+  }
+
+  _hideDialog() {
+    if (EasyLoading.isShow) EasyLoading.dismiss();
   }
 
   @override
