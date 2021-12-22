@@ -87,10 +87,10 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                       .map(
                         (r) => ScanResultTile(
                           result: r,
-                          onTap: () {
+                          onTap: () async {
                             if (r.device.name == 'Foot Nerve Tester') {
-                              r.device.connect();
-                              Future.delayed(const Duration(seconds: 2), () {
+                              await r.device.connect();
+                              Future.delayed(const Duration(seconds: 0), () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(builder: (context) {
                                     return SelectFootSideScreen(
