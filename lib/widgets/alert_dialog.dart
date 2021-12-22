@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert' show utf8;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -55,6 +56,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             // Use listenList to fix duplicate notification
             if (!listenList.contains(widget.device.id.toString())) {
               listenList.add(widget.device.id.toString());
+              print(listenList);
               characteristic.value.listen((value) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
@@ -114,26 +116,44 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                print('ไม่รู้สึก');
-                Navigator.pop(context);
-              },
-              child: const Text('ไม่รู้สึก'),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red,
-                primary: Colors.white,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                print('รู้สึก');
-                Navigator.pop(context);
-              },
-              child: const Text('รู้สึก'),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.green,
-                primary: Colors.white,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      print('ไม่รู้สึก');
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'ไม่รู้สึก',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      primary: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      print('รู้สึก');
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'รู้สึก',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      primary: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
