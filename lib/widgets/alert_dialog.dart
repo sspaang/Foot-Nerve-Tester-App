@@ -30,7 +30,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   int? command;
   bool? isFinised;
   Timer? _timer;
-  List<String> listenList = [];
 
   static const checkImage = AssetImage('assets/images/check.png');
 
@@ -45,7 +44,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     });
   }
 
-  writeDataAndWaitForNotification(int command) async {
+  getNotification() async {
     List<BluetoothService> services = await widget.device.discoverServices();
     services.forEach((service) async {
       if (service.uuid.toString() == serviceUUID) {
@@ -53,11 +52,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         for (BluetoothCharacteristic characteristic in characteristics) {
           if (characteristic.properties.notify) {
             await characteristic.setNotifyValue(true);
-            // Use listenList to fix duplicate notification
-            if (!listenList.contains(widget.device.id.toString())) {
-              listenList.add(widget.device.id.toString());
-              print(listenList);
-              characteristic.value.listen((value) {
+            characteristic.value.listen((value) {
+              if (value.isNotEmpty) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
 
@@ -67,9 +63,21 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                   _hideDialog();
                   _showSelectTestingResultDialog();
                 }
-              });
-            }
-          } else if (characteristic.properties.write) {
+              }
+            });
+          }
+        }
+      }
+    });
+  }
+
+  writeData(int command) async {
+    List<BluetoothService> services = await widget.device.discoverServices();
+    services.forEach((service) async {
+      if (service.uuid.toString() == serviceUUID) {
+        var characteristics = service.characteristics;
+        for (BluetoothCharacteristic characteristic in characteristics) {
+          if (characteristic.properties.write) {
             // OR define characteristic uuid in CharacteristicUUIDWrite and
             // else if (characteristic.uuid.toString() == CharacteristicUUIDWrite)
             var sendCommand = utf8.encode(command.toString());
@@ -171,7 +179,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     return GestureDetector(
       onTap: () {
         if (command != widget.command) {
-          writeDataAndWaitForNotification(widget.command!);
+          print('### write command from widget ###');
+          writeData(widget.command!);
         }
         showDialog(
           context: context,
@@ -181,17 +190,18 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             content: const Text('กรุณาวางส้นเท้าลงบนไฟ LED ที่แสดง'),
             actions: [
               TextButton(
-                onPressed: () {
-                  writeDataAndWaitForNotification(5);
+                onPressed: () async {
+                  await writeData(5);
                   Navigator.pop(context);
                 },
                 child: const Text('ยกเลิก'),
                 style: TextButton.styleFrom(primary: Colors.black),
               ),
               TextButton(
-                onPressed: () {
-                  writeDataAndWaitForNotification(0);
+                onPressed: () async {
+                  await writeData(0);
                   Navigator.pop(context);
+                  getNotification();
                 },
                 child: const Text('ตกลง'),
                 style: TextButton.styleFrom(primary: Colors.blue),
