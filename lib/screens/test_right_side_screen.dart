@@ -39,13 +39,13 @@ class TestRightSideScreen extends StatelessWidget {
                 children: [
                   AppAlertDialog(
                     device: device,
-                    command: 0x34,
+                    command: 4,
                     title: 'จุดที่ 1',
                     child: const CircleImage(image: firstFootSpot),
                   ),
                   AppAlertDialog(
                     device: device,
-                    command: 0x33,
+                    command: 3,
                     title: 'จุดที่ 2',
                     child: const CircleImage(image: secondFootSpot),
                   ),
@@ -75,13 +75,13 @@ class TestRightSideScreen extends StatelessWidget {
                 children: [
                   AppAlertDialog(
                     device: device,
-                    command: 0x32,
+                    command: 2,
                     title: 'จุดที่ 3',
                     child: const CircleImage(image: thirdFootSpot),
                   ),
                   AppAlertDialog(
                     device: device,
-                    command: 0x31,
+                    command: 1,
                     title: 'จุดที่ 4',
                     child: const CircleImage(image: fourthFootSpot),
                   ),

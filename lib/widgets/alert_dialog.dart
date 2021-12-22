@@ -31,17 +31,16 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
   int? command;
-  bool? isWorking;
+  bool? isFinised;
   Timer? _timer;
 
-  static const loadingSpin = AssetImage('assets/images/downloading-spin.gif');
+  static const checkImage = AssetImage('assets/images/check.png');
 
   @override
   void initState() {
     super.initState();
-    isWorking = false;
+    isFinised = false;
     EasyLoading.addStatusCallback((status) {
-      print('EasyLoading Status $status');
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
       }
@@ -60,19 +59,21 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               (value) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
-
-                if (notifyValue == '1') {
-                  _showWorkingDialog();
-                } else if (notifyValue == '0') {
-                  _hideDialog();
-                  _showSelectTestingResultDialog();
-                }
               },
             );
+            print('check notify status');
+            if (notifyValue == '1') {
+              _showWorkingDialog();
+            } else if (notifyValue == '0') {
+              _hideDialog();
+              _showSelectTestingResultDialog();
+              notifyValue = '-1';
+            }
           } else if (characteristic.uuid.toString() ==
               characteristicUUIDWrite) {
-            await characteristic.write([command]);
-            print('Value sent: $command');
+            var sendCommand = utf8.encode(command.toString());
+            await characteristic.write(sendCommand);
+            print('Value sent: $sendCommand');
           }
         }
       }
@@ -84,23 +85,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   }
 
   _showWorkingDialog() {
-    EasyLoading.showProgress(0.3, status: 'เครื่องกำลังทำงาน');
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (BuildContext context) {
-    //     return AlertDialog(
-    //       title: const Center(child: Text('กรุณารอสักครู่')),
-    //       content: Container(
-    //         width: 60,
-    //         height: 60,
-    //         child: const Image(
-    //           image: loadingSpin,
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // );
+    EasyLoading.show(
+        status: 'เครื่องกำลังทำงาน', maskType: EasyLoadingMaskType.black);
   }
 
   _showSelectTestingResultDialog() {
@@ -109,13 +95,24 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('คุณรู้สึกหรือไม่?'),
-          content: Container(
-            width: 60,
-            height: 60,
-            child: const Image(
-              image: loadingSpin,
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: Image(
+                  image: checkImage,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'คุณรู้สึกหรือไม่?',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -166,7 +163,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             actions: [
               TextButton(
                 onPressed: () {
-                  writeDataAndWaitForNotification(0x35);
+                  writeDataAndWaitForNotification(5);
                   Navigator.pop(context);
                 },
                 child: const Text('ยกเลิก'),
@@ -174,7 +171,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               ),
               TextButton(
                 onPressed: () {
-                  writeDataAndWaitForNotification(0x30);
+                  writeDataAndWaitForNotification(0);
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
