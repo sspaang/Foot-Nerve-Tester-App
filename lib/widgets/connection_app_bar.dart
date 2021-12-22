@@ -23,8 +23,8 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             String text;
             switch (snapshot.data) {
               case BluetoothDeviceState.connected:
-                onPressed = () {
-                  device.disconnect();
+                onPressed = () async {
+                  await device.disconnect();
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const FindDevicesScreen()));
                 };
