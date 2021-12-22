@@ -26,9 +26,11 @@ class AppAlertDialog extends StatefulWidget {
 
 class _AppAlertDialogState extends State<AppAlertDialog> {
   static const String serviceUUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+  static const String notifyUUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+  static const String writeUUID = "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
   int? command;
-  bool? isFinised;
+  List<String>? listenList = [];
   Timer? _timer;
 
   static const checkImage = AssetImage('assets/images/check.png');
@@ -36,7 +38,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   @override
   void initState() {
     super.initState();
-    isFinised = false;
+    listenList = [];
     EasyLoading.addStatusCallback((status) {
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
@@ -46,38 +48,43 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   getNotification() async {
     List<BluetoothService> services = await widget.device.discoverServices();
-    services.forEach((service) async {
+    // services.forEach((service) async {
+    for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
-        var characteristics = service.characteristics;
-        for (BluetoothCharacteristic characteristic in characteristics) {
-          if (characteristic.properties.notify) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.uuid.toString() == notifyUUID) {
             await characteristic.setNotifyValue(true);
-            characteristic.value.listen((value) {
-              if (value.isNotEmpty) {
-                notifyValue = _dataParser(value);
-                print('Notify value: $notifyValue');
+            if (!listenList!.contains(widget.device.id.toString())) {
+              characteristic.value.listen((value) {
+                if (value.isNotEmpty) {
+                  notifyValue = _dataParser(value);
+                  print('Notify value: $notifyValue');
 
-                if (notifyValue == '1') {
-                  _showWorkingDialog();
-                } else if (notifyValue == '0') {
-                  _hideDialog();
-                  _showSelectTestingResultDialog();
+                  if (notifyValue == '1') {
+                    _showWorkingDialog();
+                  } else if (notifyValue == '0') {
+                    _hideDialog();
+                    EasyLoading.showSuccess('เสร็จสิ้น',
+                        duration: const Duration(seconds: 1));
+                    // _showSelectTestingResultDialog();
+                  }
                 }
-              }
-            });
+              });
+            }
           }
         }
       }
-    });
+    }
   }
 
   writeData(int command) async {
     List<BluetoothService> services = await widget.device.discoverServices();
-    services.forEach((service) async {
+    for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
         var characteristics = service.characteristics;
         for (BluetoothCharacteristic characteristic in characteristics) {
-          if (characteristic.properties.write) {
+          if (characteristic.uuid.toString() == writeUUID) {
             // OR define characteristic uuid in CharacteristicUUIDWrite and
             // else if (characteristic.uuid.toString() == CharacteristicUUIDWrite)
             var sendCommand = utf8.encode(command.toString());
@@ -86,7 +93,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
           }
         }
       }
-    });
+    }
   }
 
   String _dataParser(dataFromDevice) {
@@ -95,7 +102,10 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   _showWorkingDialog() {
     EasyLoading.show(
-        status: 'เครื่องกำลังทำงาน', maskType: EasyLoadingMaskType.black);
+      status: 'เครื่องกำลังทำงาน',
+      maskType: EasyLoadingMaskType.black,
+      dismissOnTap: false,
+    );
   }
 
   _showSelectTestingResultDialog() {
@@ -179,7 +189,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     return GestureDetector(
       onTap: () {
         if (command != widget.command) {
-          print('### write command from widget ###');
           writeData(widget.command!);
         }
         showDialog(
@@ -190,8 +199,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             content: const Text('กรุณาวางส้นเท้าลงบนไฟ LED ที่แสดง'),
             actions: [
               TextButton(
-                onPressed: () async {
-                  await writeData(5);
+                onPressed: () {
+                  writeData(5);
                   Navigator.pop(context);
                 },
                 child: const Text('ยกเลิก'),

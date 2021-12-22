@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import './select_foot_side_screen.dart';
 
@@ -89,7 +90,12 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                           result: r,
                           onTap: () async {
                             if (r.device.name == 'Foot Nerve Tester') {
+                              EasyLoading.show(
+                                  status: 'กรุณารอสักครู่',
+                                  maskType: EasyLoadingMaskType.black,
+                                  dismissOnTap: false);
                               await r.device.connect();
+                              EasyLoading.dismiss();
                               Future.delayed(const Duration(seconds: 0), () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(builder: (context) {
