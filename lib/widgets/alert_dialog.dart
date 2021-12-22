@@ -52,6 +52,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         for (BluetoothCharacteristic characteristic in characteristics) {
           if (characteristic.properties.notify) {
             await characteristic.setNotifyValue(true);
+            // Use listenList to fix duplicate notification
             if (!listenList.contains(widget.device.id.toString())) {
               listenList.add(widget.device.id.toString());
               characteristic.value.listen((value) {
