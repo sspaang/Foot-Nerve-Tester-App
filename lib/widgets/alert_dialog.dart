@@ -32,14 +32,12 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   String? receiveValue;
   int? command;
   Timer? _timer;
-  bool? isShowing;
 
   static const checkImage = AssetImage('assets/images/check.png');
 
   @override
   void initState() {
     super.initState();
-    isShowing = false;
     EasyLoading.addStatusCallback((status) {
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
