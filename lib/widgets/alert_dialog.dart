@@ -64,9 +64,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                 if (notifyValue == '1') {
                   _showWorkingDialog();
                 } else if (notifyValue == '0') {
-                  _hideDialog();
-                  // EasyLoading.showSuccess('เสร็จสิ้น',
-                  //     duration: const Duration(seconds: 1));
+                  _hideWorkingDialog();
                   _showSelectTestingResultDialog();
                 }
               }
@@ -107,7 +105,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     );
   }
 
-  _hideDialog() {
+  _hideWorkingDialog() {
     if (EasyLoading.isShow) EasyLoading.dismiss();
   }
 
