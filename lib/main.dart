@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 
 import './screens/bluetooth_off_screen.dart';
 import './screens/find_devices_screen.dart';
@@ -32,7 +33,7 @@ class FlutterBlueApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,

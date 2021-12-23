@@ -4,6 +4,7 @@ import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 
 class AppAlertDialog extends StatefulWidget {
   const AppAlertDialog({
@@ -111,87 +112,57 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   }
 
   _showSelectTestingResultDialog() {
-    if (!isShowing!) _selectTestingResultDialog();
+    if (!Get.isDialogOpen!) _selectTestingResultDialog();
   }
 
   _selectTestingResultDialog() {
-    setState(() {
-      isShowing = true;
-    });
-    showDialog(
-      context: context,
+    Get.defaultDialog(
       barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: Image(
-                  image: checkImage,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'คุณรู้สึกหรือไม่?',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      print('ไม่รู้สึก');
-                      Navigator.pop(context);
-                      setState(() {
-                        isShowing = false;
-                      });
-                    },
-                    child: const Text(
-                      'ไม่รู้สึก',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      primary: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      print('รู้สึก');
-                      Navigator.pop(context);
-                      setState(() {
-                        isShowing = false;
-                      });
-                    },
-                    child: const Text(
-                      'รู้สึก',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      primary: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+      radius: 5.0,
+      content: Column(
+        children: const [
+          SizedBox(
+            width: 40,
+            height: 40,
+            child: Image(
+              image: checkImage,
             ),
-          ],
-        );
-      },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'คุณรู้สึกหรือไม่?',
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            print('ไม่รู้สึก');
+            Get.back();
+          },
+          child: const Text(
+            "ไม่รู้สึก",
+            style: TextStyle(fontSize: 16),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: Colors.red, onPrimary: Colors.white),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            print('รู้สึก');
+            Get.back();
+          },
+          child: const Text(
+            "รู้สึก",
+            style: TextStyle(fontSize: 16),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: Colors.green, onPrimary: Colors.white),
+        ),
+      ],
     );
   }
 
