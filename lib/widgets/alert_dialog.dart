@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert' show utf8;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -16,8 +15,8 @@ class AppAlertDialog extends StatefulWidget {
   }) : super(key: key);
 
   final BluetoothDevice device;
-  final Widget? child;
   final String? title;
+  final Widget? child;
   final int? command;
 
   @override
@@ -29,16 +28,17 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   static const String notifyUUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
   static const String writeUUID = "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
+  String? receiveValue;
   int? command;
-  List<String>? listenList = [];
   Timer? _timer;
+  bool? isShowing;
 
   static const checkImage = AssetImage('assets/images/check.png');
 
   @override
   void initState() {
     super.initState();
-    listenList = [];
+    isShowing = false;
     EasyLoading.addStatusCallback((status) {
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
@@ -55,23 +55,21 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             in service.characteristics) {
           if (characteristic.uuid.toString() == notifyUUID) {
             await characteristic.setNotifyValue(true);
-            if (!listenList!.contains(widget.device.id.toString())) {
-              characteristic.value.listen((value) {
-                if (value.isNotEmpty) {
-                  notifyValue = _dataParser(value);
-                  print('Notify value: $notifyValue');
+            characteristic.value.listen((value) {
+              if (value.isNotEmpty) {
+                notifyValue = _dataParser(value);
+                print('Notify value: $notifyValue');
 
-                  if (notifyValue == '1') {
-                    _showWorkingDialog();
-                  } else if (notifyValue == '0') {
-                    _hideDialog();
-                    EasyLoading.showSuccess('เสร็จสิ้น',
-                        duration: const Duration(seconds: 1));
-                    // _showSelectTestingResultDialog();
-                  }
+                if (notifyValue == '1') {
+                  _showWorkingDialog();
+                } else if (notifyValue == '0') {
+                  _hideDialog();
+                  // EasyLoading.showSuccess('เสร็จสิ้น',
+                  //     duration: const Duration(seconds: 1));
+                  _showSelectTestingResultDialog();
                 }
-              });
-            }
+              }
+            });
           }
         }
       }
@@ -108,11 +106,22 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     );
   }
 
+  _hideDialog() {
+    if (EasyLoading.isShow) EasyLoading.dismiss();
+  }
+
   _showSelectTestingResultDialog() {
+    if (!isShowing!) _selectTestingResultDialog();
+  }
+
+  _selectTestingResultDialog() {
+    setState(() {
+      isShowing = true;
+    });
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -144,6 +153,9 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                     onPressed: () {
                       print('ไม่รู้สึก');
                       Navigator.pop(context);
+                      setState(() {
+                        isShowing = false;
+                      });
                     },
                     child: const Text(
                       'ไม่รู้สึก',
@@ -161,6 +173,9 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                     onPressed: () {
                       print('รู้สึก');
                       Navigator.pop(context);
+                      setState(() {
+                        isShowing = false;
+                      });
                     },
                     child: const Text(
                       'รู้สึก',
@@ -178,10 +193,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         );
       },
     );
-  }
-
-  _hideDialog() {
-    if (EasyLoading.isShow) EasyLoading.dismiss();
   }
 
   @override
@@ -209,8 +220,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () async {
                   await writeData(0);
-                  Navigator.pop(context);
                   getNotification();
+                  Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
                 style: TextButton.styleFrom(primary: Colors.blue),
