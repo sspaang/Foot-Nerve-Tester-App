@@ -49,7 +49,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   getNotification() async {
     List<BluetoothService> services = await widget.device.discoverServices();
-    // services.forEach((service) async {
     for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
         for (BluetoothCharacteristic characteristic
@@ -82,8 +81,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         var characteristics = service.characteristics;
         for (BluetoothCharacteristic characteristic in characteristics) {
           if (characteristic.uuid.toString() == writeUUID) {
-            // OR define characteristic uuid in CharacteristicUUIDWrite and
-            // else if (characteristic.uuid.toString() == CharacteristicUUIDWrite)
             var sendCommand = utf8.encode(command.toString());
             await characteristic.write(sendCommand);
             print('Value sent: $sendCommand');
