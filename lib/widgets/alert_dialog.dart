@@ -126,7 +126,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
           ),
           Text(
             'คุณรู้สึกหรือไม่?',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 20),
           ),
         ],
       ),
