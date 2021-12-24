@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../screens/find_devices_screen.dart';
 
 class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -24,9 +25,18 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             switch (snapshot.data) {
               case BluetoothDeviceState.connected:
                 onPressed = () async {
+                  EasyLoading.show(
+                      status: 'กำลังตัดการเชื่อมต่อ',
+                      maskType: EasyLoadingMaskType.black,
+                      dismissOnTap: false);
                   await device.disconnect();
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const FindDevicesScreen()));
+                  EasyLoading.dismiss();
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const FindDevicesScreen(),
+                    ),
+                  );
                 };
                 text = 'DISCONNECT';
                 break;

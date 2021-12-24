@@ -91,7 +91,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                           onTap: () async {
                             if (r.device.name == 'Foot Nerve Tester') {
                               EasyLoading.show(
-                                  status: 'กรุณารอสักครู่',
+                                  status: 'กำลังเชื่อมต่อ',
                                   maskType: EasyLoadingMaskType.black,
                                   dismissOnTap: false);
                               await r.device.connect();

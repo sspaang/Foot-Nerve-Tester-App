@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+    hive: ^2.0.5
     get: ^4.6.1
     flutter_easyloading: ^3.0.3
     flutter_blue: ^0.8.0
