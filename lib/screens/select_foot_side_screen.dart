@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:foot_nerve_tester_app/screens/test_left_side_screen.dart';
-import 'package:foot_nerve_tester_app/screens/test_right_side_screen.dart';
-import 'package:foot_nerve_tester_app/widgets/connection_app_bar.dart';
+
+import './test_left_side_screen.dart';
+import './test_right_side_screen.dart';
+import '../widgets/connection_app_bar.dart';
 
 class SelectFootSideScreen extends StatelessWidget {
   const SelectFootSideScreen({Key? key, required this.device})
