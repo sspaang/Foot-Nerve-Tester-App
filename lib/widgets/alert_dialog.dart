@@ -175,7 +175,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             actions: [
               TextButton(
                 onPressed: () {
-                  writeData(5);
+                  writeData(8); // turn off all LEDs
                   Navigator.pop(context);
                 },
                 child: const Text('ยกเลิก'),
@@ -183,7 +183,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               ),
               TextButton(
                 onPressed: () async {
-                  await writeData(0);
+                  await writeData(0); // start working
                   getNotification();
                   Navigator.pop(context);
                 },
