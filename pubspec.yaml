@@ -27,7 +27,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+    # date formats
+    intl: ^0.17.0
+
+    # hive database
     hive: ^2.0.5
+    hive_flutter: ^1.1.0
+
     get: ^4.6.1
     flutter_easyloading: ^3.0.3
     flutter_blue: ^0.8.0
@@ -41,6 +47,10 @@ dependencies:
 dev_dependencies:
     flutter_test:
         sdk: flutter
+
+    # hive database
+    build_runner: ^2.1.7
+    hive_generator: ^1.1.1
 
     # The "flutter_lints" package below contains a set of recommended lints to
     # encourage good coding practices. The lint set provided by the package is
