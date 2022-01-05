@@ -191,6 +191,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print("ID: ${widget.id}");
         if (command != widget.command) {
           writeData(widget.command!);
         }

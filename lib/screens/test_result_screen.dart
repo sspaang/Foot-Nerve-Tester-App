@@ -17,7 +17,7 @@ class TestResultScreen extends StatefulWidget {
 class _TestResultScreenState extends State<TestResultScreen> {
   @override
   void dispose() {
-    Hive.box('test_result').close();
+    Hive.close();
     super.dispose();
   }
 
@@ -93,6 +93,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Widget buildButton(BuildContext context, TestResult testResult) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
           child: TextButton.icon(
