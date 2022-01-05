@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import './screens/bluetooth_off_screen.dart';
 import './screens/find_devices_screen.dart';
 
-void main() {
+import './model/test_result.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(TestResultAdapter());
+  await Hive.openBox<TestResult>('test_result');
+
   runApp(const FlutterBlueApp());
   configLoading();
 }
