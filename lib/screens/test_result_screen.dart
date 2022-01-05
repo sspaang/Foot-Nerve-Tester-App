@@ -15,6 +15,12 @@ class TestResultScreen extends StatefulWidget {
 
 class _TestResultScreenState extends State<TestResultScreen> {
   @override
+  void dispose() {
+    Hive.box('test_result').close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
