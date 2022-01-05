@@ -5,20 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../hive_method.dart';
 
 class AppAlertDialog extends StatefulWidget {
+  final BluetoothDevice device;
+  final String? title;
+  final Widget? child;
+  final int? command;
+  final int? id;
+
   const AppAlertDialog({
     Key? key,
     required this.device,
     required this.title,
     required this.child,
     required this.command,
+    this.id,
   }) : super(key: key);
-
-  final BluetoothDevice device;
-  final String? title;
-  final Widget? child;
-  final int? command;
 
   @override
   State<AppAlertDialog> createState() => _AppAlertDialogState();
@@ -33,6 +39,9 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   dynamic notifyStream;
   int? command;
   Timer? _timer;
+  String? spot;
+  bool? isFeel;
+  DateTime? testDate;
 
   static const checkImage = AssetImage('assets/images/check.png');
 
@@ -50,6 +59,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   @override
   void dispose() {
     notifyStream!.close();
+    Hive.box('test_result').close();
     print("dispose");
     super.dispose();
   }
@@ -118,6 +128,24 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   }
 
   _selectTestingResultDialog() {
+    if (widget.id == 1) {
+      spot = "Left thumb";
+    } else if (widget.id == 2) {
+      spot = "Left second metatarsal head";
+    } else if (widget.id == 3) {
+      spot = "Left third metatarsal head";
+    } else if (widget.id == 4) {
+      spot = "Left fourth metatarsal head";
+    } else if (widget.id == 5) {
+      spot = "Right thumb";
+    } else if (widget.id == 6) {
+      spot = "Right second metatarsal head";
+    } else if (widget.id == 7) {
+      spot = "Right third metatarsal head";
+    } else if (widget.id == 8) {
+      spot = "Right fourth metatarsal head";
+    }
+
     Get.defaultDialog(
       barrierDismissible: false,
       radius: 5.0,
@@ -142,7 +170,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
-            print('ไม่รู้สึก');
+            addTestResult(spot!, false);
+            print('$spot:ไม่รู้สึก');
             Get.back();
           },
           child: const Text(
@@ -154,7 +183,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            print('รู้สึก');
+            addTestResult(spot!, true);
+            print('$spot: รู้สึก');
             Get.back();
           },
           child: const Text(
