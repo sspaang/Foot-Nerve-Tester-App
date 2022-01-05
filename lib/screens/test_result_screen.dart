@@ -30,7 +30,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
         body: ValueListenableBuilder<Box<TestResult>>(
           valueListenable: Boxes.getTesingResults().listenable(),
           builder: (context, box, _) {
-            final testResults = box.values.toList().cast<TestResult>();
+            final testResults =
+                box.values.toList().reversed.toList().cast<TestResult>();
             return buildContent(testResults);
           },
         ));
@@ -71,17 +72,19 @@ class _TestResultScreenState extends State<TestResultScreen> {
       child: ExpansionTile(
         title: Text(
           spot,
-          maxLines: 2,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 16,
           ),
         ),
-        subtitle: Text(date),
+        subtitle: Text(
+          date,
+          style: const TextStyle(fontSize: 14),
+        ),
         trailing: Text(
           resultText,
           style: TextStyle(
-              color: color, fontWeight: FontWeight.bold, fontSize: 18),
+              color: color, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         children: [buildButton(context, testResult)],
       ),
