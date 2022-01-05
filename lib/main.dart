@@ -4,6 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import './screens/bluetooth_off_screen.dart';
 import './screens/find_devices_screen.dart';
@@ -16,6 +18,9 @@ void main() async {
 
   Hive.registerAdapter(TestResultAdapter());
   await Hive.openBox<TestResult>('test_result');
+
+  Intl.defaultLocale = 'th';
+  initializeDateFormatting();
 
   runApp(const FlutterBlueApp());
   configLoading();

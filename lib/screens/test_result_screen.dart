@@ -3,6 +3,7 @@ import 'package:foot_nerve_tester_app/hive_method.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+
 import '../model/test_result.dart';
 import '../boxes.dart';
 
@@ -61,7 +62,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Widget buildTestResult(BuildContext context, TestResult testResult) {
     final color = testResult.isFeel! ? Colors.green : Colors.red;
-    final date = DateFormat.yMMMMd().format(testResult.testDate!);
+    final date = DateFormat.yMMMMEEEEd().format(testResult.testDate!);
     final spot = testResult.spot!;
     final resultText = testResult.isFeel! ? "ปกติ" : "มีความเสี่ยง";
 
