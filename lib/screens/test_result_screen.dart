@@ -62,7 +62,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Widget buildTestResult(BuildContext context, TestResult testResult) {
     final color = testResult.isFeel! ? Colors.green : Colors.red;
-    final date = DateFormat.yMMMMEEEEd().format(testResult.testDate!);
+    final date = DateFormat.yMMMMd().add_jm().format(testResult.testDate!);
     final spot = testResult.spot!;
     final resultText = testResult.isFeel! ? "ปกติ" : "มีความเสี่ยง";
 
@@ -71,6 +71,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
       child: ExpansionTile(
         title: Text(
           spot,
+          maxLines: 2,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
