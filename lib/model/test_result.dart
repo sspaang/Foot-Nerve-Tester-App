@@ -1,13 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 
-class TestResult {
-  int? id;
-  String? spot;
-  String? result;
+part 'test_result.g.dart';
 
-  TestResult({
-    @required id,
-    @required spot,
-    @required result,
-  });
+@HiveType(typeId: 0)
+class TestResult extends HiveObject {
+  @HiveField(0)
+  late String? spot;
+
+  @HiveField(1)
+  late bool? isFeel;
+
+  @HiveField(2)
+  late DateTime? testDate;
 }
