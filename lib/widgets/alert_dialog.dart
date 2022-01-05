@@ -70,14 +70,16 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
                   if (notifyValue == '1') {
                     _showWorkingDialog();
-                  } else if (notifyValue == '0') {
+                  } else {
                     _hideWorkingDialog();
-                    print("2. spot on notify: $spotId");
-                    _showSelectTestingResultDialog(spotId);
                   }
                 }
               },
             );
+            print("2. spot on notify: $spotId");
+            _showSelectTestingResultDialog(spotId);
+            print('cancel subscription');
+            await characteristic.setNotifyValue(false);
           }
         }
       }
