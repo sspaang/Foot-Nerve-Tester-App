@@ -30,6 +30,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   static const String writeUUID = "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
   String? receiveValue;
+  dynamic notifyStream;
   int? command;
   Timer? _timer;
 
@@ -37,12 +38,20 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   @override
   void initState() {
-    super.initState();
+    print("initState");
     EasyLoading.addStatusCallback((status) {
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
       }
     });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    notifyStream!.close();
+    print("dispose");
+    super.dispose();
   }
 
   getNotification() async {
@@ -53,7 +62,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             in service.characteristics) {
           if (characteristic.uuid.toString() == notifyUUID) {
             await characteristic.setNotifyValue(true);
-            characteristic.value.listen((value) {
+            notifyStream = characteristic.value.listen((value) {
               if (value.isNotEmpty) {
                 notifyValue = _dataParser(value);
                 print('Notify value: $notifyValue');
