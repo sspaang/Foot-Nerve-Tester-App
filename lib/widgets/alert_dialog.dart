@@ -54,7 +54,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     super.dispose();
   }
 
-  getNotification() async {
+  getNotifyValue() async {
     List<BluetoothService> services = await widget.device.discoverServices();
     for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
@@ -193,7 +193,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () async {
                   await writeData(0); // start working
-                  getNotification();
+                  getNotifyValue();
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
