@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../hive_method.dart';
 
@@ -47,21 +45,12 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   @override
   void initState() {
-    print("initState");
     EasyLoading.addStatusCallback((status) {
       if (status == EasyLoadingStatus.dismiss) {
         _timer?.cancel();
       }
     });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    notifyStream!.close();
-    Hive.box('test_result').close();
-    print("dispose");
-    super.dispose();
   }
 
   getNotifyValue() async {

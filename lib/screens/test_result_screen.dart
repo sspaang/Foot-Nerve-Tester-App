@@ -46,7 +46,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
       ));
     } else {
       return Container(
-        margin: const EdgeInsetsDirectional.all(20),
+        margin: const EdgeInsetsDirectional.all(6),
         child: ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: testResults.length,
@@ -72,7 +72,7 @@ class _TestResultScreenState extends State<TestResultScreen> {
           spot,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 18,
           ),
         ),
         subtitle: Text(date),
