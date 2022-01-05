@@ -16,12 +16,6 @@ class TestResultScreen extends StatefulWidget {
 
 class _TestResultScreenState extends State<TestResultScreen> {
   @override
-  void dispose() {
-    Hive.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -93,7 +87,6 @@ class _TestResultScreenState extends State<TestResultScreen> {
 
   Widget buildButton(BuildContext context, TestResult testResult) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
           child: TextButton.icon(

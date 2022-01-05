@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hive/hive.dart';
 import '../screens/find_devices_screen.dart';
 
 class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -30,6 +31,7 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
                       maskType: EasyLoadingMaskType.black,
                       dismissOnTap: false);
                   await device.disconnect();
+                  Hive.close();
                   EasyLoading.dismiss();
                   Navigator.popUntil(context, (route) => route.isFirst);
                   Navigator.of(context).pushReplacement(

@@ -37,9 +37,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   dynamic notifyStream;
   int? command;
   Timer? _timer;
-  String? spot;
-  bool? isFeel;
-  DateTime? testDate;
+  int? spot;
+  String? spotText;
 
   static const checkImage = AssetImage('assets/images/check.png');
 
@@ -53,7 +52,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     super.initState();
   }
 
-  getNotifyValue() async {
+  getNotifyValue(int spotId) async {
     List<BluetoothService> services = await widget.device.discoverServices();
     for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
@@ -61,19 +60,24 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             in service.characteristics) {
           if (characteristic.uuid.toString() == notifyUUID) {
             await characteristic.setNotifyValue(true);
-            notifyStream = characteristic.value.listen((value) {
-              if (value.isNotEmpty) {
-                notifyValue = _dataParser(value);
-                print('Notify value: $notifyValue');
+            characteristic.value.listen(
+              (value) {
+                if (value.isNotEmpty) {
+                  var notifyLength = value.length;
+                  print("value length: $notifyLength");
+                  notifyValue = _dataParser(value);
+                  print('Notify value: $notifyValue');
 
-                if (notifyValue == '1') {
-                  _showWorkingDialog();
-                } else if (notifyValue == '0') {
-                  _hideWorkingDialog();
-                  _showSelectTestingResultDialog();
+                  if (notifyValue == '1') {
+                    _showWorkingDialog();
+                  } else if (notifyValue == '0') {
+                    _hideWorkingDialog();
+                    print("2. spot on notify: $spotId");
+                    _showSelectTestingResultDialog(spotId);
+                  }
                 }
-              }
-            });
+              },
+            );
           }
         }
       }
@@ -112,27 +116,30 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     if (EasyLoading.isShow) EasyLoading.dismiss();
   }
 
-  _showSelectTestingResultDialog() {
-    if (!Get.isDialogOpen!) _selectTestingResultDialog();
+  _showSelectTestingResultDialog(int spot) {
+    print("3. spot on showing function: $spot");
+    if (!Get.isDialogOpen!) _selectTestingResultDialog(spot);
   }
 
-  _selectTestingResultDialog() {
-    if (widget.id == 1) {
-      spot = "Left thumb";
-    } else if (widget.id == 2) {
-      spot = "Left second metatarsal head";
-    } else if (widget.id == 3) {
-      spot = "Left third metatarsal head";
-    } else if (widget.id == 4) {
-      spot = "Left fourth metatarsal head";
-    } else if (widget.id == 5) {
-      spot = "Right thumb";
-    } else if (widget.id == 6) {
-      spot = "Right second metatarsal head";
-    } else if (widget.id == 7) {
-      spot = "Right third metatarsal head";
-    } else if (widget.id == 8) {
-      spot = "Right fourth metatarsal head";
+  _selectTestingResultDialog(int spotId) {
+    print("4. spot on alert: $spotId");
+
+    if (spotId == 1) {
+      spotText = "Left thumb";
+    } else if (spotId == 2) {
+      spotText = "Left second metatarsal head";
+    } else if (spotId == 3) {
+      spotText = "Left third metatarsal head";
+    } else if (spotId == 4) {
+      spotText = "Left fourth metatarsal head";
+    } else if (spotId == 5) {
+      spotText = "Right thumb";
+    } else if (spotId == 6) {
+      spotText = "Right second metatarsal head";
+    } else if (spotId == 7) {
+      spotText = "Right third metatarsal head";
+    } else if (spotId == 8) {
+      spotText = "Right fourth metatarsal head";
     }
 
     Get.defaultDialog(
@@ -159,8 +166,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
-            addTestResult(spot!, false);
-            print('$spot:ไม่รู้สึก');
+            addTestResult(spotText!, false);
+            print('$spotText:ไม่รู้สึก');
             Get.back();
           },
           child: const Text(
@@ -172,8 +179,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            addTestResult(spot!, true);
-            print('$spot: รู้สึก');
+            addTestResult(spotText!, true);
+            print('$spotText: รู้สึก');
             Get.back();
           },
           child: const Text(
@@ -189,12 +196,13 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   @override
   Widget build(BuildContext context) {
+    spot = widget.id;
     return GestureDetector(
       onTap: () {
-        print("ID: ${widget.id}");
         if (command != widget.command) {
           writeData(widget.command!);
         }
+
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -213,7 +221,8 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () async {
                   await writeData(0); // start working
-                  getNotifyValue();
+                  print("1. ID: $spot");
+                  getNotifyValue(spot!);
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
