@@ -52,7 +52,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     super.initState();
   }
 
-  getNotifyValue(int spotId) async {
+  getNotifyValue() async {
     List<BluetoothService> services = await widget.device.discoverServices();
     for (BluetoothService service in services) {
       if (service.uuid.toString() == serviceUUID) {
@@ -63,8 +63,6 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
             characteristic.value.listen(
               (value) {
                 if (value.isNotEmpty) {
-                  var notifyLength = value.length;
-                  print("value length: $notifyLength");
                   notifyValue = _dataParser(value);
                   print('Notify value: $notifyValue');
 
@@ -72,14 +70,12 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                     _showWorkingDialog();
                   } else {
                     _hideWorkingDialog();
+                    print("2. spot on notify: $spot");
+                    _showSelectTestingResultDialog();
                   }
                 }
               },
             );
-            print("2. spot on notify: $spotId");
-            _showSelectTestingResultDialog(spotId);
-            print('cancel subscription');
-            await characteristic.setNotifyValue(false);
           }
         }
       }
@@ -118,29 +114,29 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     if (EasyLoading.isShow) EasyLoading.dismiss();
   }
 
-  _showSelectTestingResultDialog(int spot) {
+  _showSelectTestingResultDialog() {
     print("3. spot on showing function: $spot");
-    if (!Get.isDialogOpen!) _selectTestingResultDialog(spot);
+    if (!Get.isDialogOpen!) _selectTestingResultDialog();
   }
 
-  _selectTestingResultDialog(int spotId) {
-    print("4. spot on alert: $spotId");
+  _selectTestingResultDialog() {
+    print("4. spot on alert: $spot");
 
-    if (spotId == 1) {
+    if (spot == 1) {
       spotText = "Left thumb";
-    } else if (spotId == 2) {
+    } else if (spot == 2) {
       spotText = "Left second metatarsal head";
-    } else if (spotId == 3) {
+    } else if (spot == 3) {
       spotText = "Left third metatarsal head";
-    } else if (spotId == 4) {
+    } else if (spot == 4) {
       spotText = "Left fourth metatarsal head";
-    } else if (spotId == 5) {
+    } else if (spot == 5) {
       spotText = "Right thumb";
-    } else if (spotId == 6) {
+    } else if (spot == 6) {
       spotText = "Right second metatarsal head";
-    } else if (spotId == 7) {
+    } else if (spot == 7) {
       spotText = "Right third metatarsal head";
-    } else if (spotId == 8) {
+    } else if (spot == 8) {
       spotText = "Right fourth metatarsal head";
     }
 
@@ -224,7 +220,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                 onPressed: () async {
                   await writeData(0); // start working
                   print("1. ID: $spot");
-                  getNotifyValue(spot!);
+                  getNotifyValue();
                   Navigator.pop(context);
                 },
                 child: const Text('ตกลง'),
