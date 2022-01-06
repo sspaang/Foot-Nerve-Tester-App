@@ -33,11 +33,9 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   static const String notifyUUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
   static const String writeUUID = "828917c1-ea55-4d4a-a66e-fd202cea0645";
   String? notifyValue;
-  String? receiveValue;
-  dynamic notifyStream;
   int? command;
   Timer? _timer;
-  int? spot;
+  int? spotId;
   String? spotText;
 
   static const checkImage = AssetImage('assets/images/check.png');
@@ -70,7 +68,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
                     _showWorkingDialog();
                   } else {
                     _hideWorkingDialog();
-                    print("2. spot on notify: $spot");
+                    print("2. spot on notify: $spotId");
                     _showSelectTestingResultDialog();
                   }
                 }
@@ -115,28 +113,28 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
   }
 
   _showSelectTestingResultDialog() {
-    print("3. spot on showing function: $spot");
+    print("3. spot on showing function: $spotId");
     if (!Get.isDialogOpen!) _selectTestingResultDialog();
   }
 
   _selectTestingResultDialog() {
-    print("4. spot on alert: $spot");
+    print("4. spot on alert: $spotId");
 
-    if (spot == 1) {
+    if (spotId == 1) {
       spotText = "Left thumb";
-    } else if (spot == 2) {
+    } else if (spotId == 2) {
       spotText = "Left second metatarsal head";
-    } else if (spot == 3) {
+    } else if (spotId == 3) {
       spotText = "Left third metatarsal head";
-    } else if (spot == 4) {
+    } else if (spotId == 4) {
       spotText = "Left fourth metatarsal head";
-    } else if (spot == 5) {
+    } else if (spotId == 5) {
       spotText = "Right thumb";
-    } else if (spot == 6) {
+    } else if (spotId == 6) {
       spotText = "Right second metatarsal head";
-    } else if (spot == 7) {
+    } else if (spotId == 7) {
       spotText = "Right third metatarsal head";
-    } else if (spot == 8) {
+    } else if (spotId == 8) {
       spotText = "Right fourth metatarsal head";
     }
 
@@ -194,7 +192,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   @override
   Widget build(BuildContext context) {
-    spot = widget.id;
+    spotId = widget.id;
     return GestureDetector(
       onTap: () {
         if (command != widget.command) {
@@ -219,7 +217,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
               TextButton(
                 onPressed: () async {
                   await writeData(0); // start working
-                  print("1. ID: $spot");
+                  print("1. ID: $spotId");
                   getNotifyValue();
                   Navigator.pop(context);
                 },

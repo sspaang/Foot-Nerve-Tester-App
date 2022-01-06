@@ -64,9 +64,9 @@ class _TestResultScreenState extends State<TestResultScreen> {
     return Card(
       color: Colors.white,
       child: ExpansionTile(
-        title: Text(
-          spot,
-          style: const TextStyle(
+        title: const Text(
+          "ผลการทดสอบ",
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
