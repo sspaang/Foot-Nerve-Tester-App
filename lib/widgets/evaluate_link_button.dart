@@ -12,7 +12,10 @@ class EvaluateLinkButton extends StatelessWidget {
           'https://dmthai.org/index.php/knowledge/for-normal-person/evaluation-form'),
       builder: (context, followLink) {
         return ElevatedButton(
-          child: const Text("ทำแบบประเมินความเสี่ยงโรคเบาหวาน"),
+          child: const Text(
+            "ทำแบบประเมินความเสี่ยงโรคเบาหวาน",
+            style: TextStyle(fontSize: 16),
+          ),
           onPressed: followLink,
         );
       },
