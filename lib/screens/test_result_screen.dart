@@ -20,6 +20,13 @@ class _TestResultScreenState extends State<TestResultScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('ผลการทดสอบ'),
+          actions: [
+            TextButton.icon(
+              onPressed: () => clearTestResult(),
+              icon: const Icon(Icons.delete),
+              label: const Text("ลบทั้งหมด"),
+            ),
+          ],
         ),
         body: ValueListenableBuilder<Box<TestResult>>(
           valueListenable: Boxes.getTesingResults().listenable(),

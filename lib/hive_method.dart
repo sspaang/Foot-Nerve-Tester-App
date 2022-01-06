@@ -16,3 +16,9 @@ void deleteTestResult(TestResult testResult) {
   testResult.delete();
   print("delete test result");
 }
+
+void clearTestResult() async {
+  final box = Boxes.getTesingResults();
+  await box.clear();
+  print("clear test result");
+}
