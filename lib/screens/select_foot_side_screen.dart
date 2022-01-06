@@ -5,6 +5,7 @@ import './test_left_side_screen.dart';
 import './test_right_side_screen.dart';
 import '../widgets/connection_app_bar.dart';
 import '../widgets/view_result_button.dart';
+import '../widgets/evaluate_link_button.dart';
 
 class SelectFootSideScreen extends StatelessWidget {
   const SelectFootSideScreen({Key? key, required this.device})
@@ -89,6 +90,10 @@ class SelectFootSideScreen extends StatelessWidget {
               height: 20,
             ),
             const ResultButton(),
+            const SizedBox(
+              height: 20,
+            ),
+            const EvaluateLinkButton(),
           ],
         ),
       ),
