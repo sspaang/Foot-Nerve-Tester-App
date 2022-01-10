@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import './model/test_result.dart';
 import './boxes.dart';
 
@@ -19,6 +20,20 @@ void deleteTestResult(TestResult testResult) {
 
 void clearTestResult() async {
   final box = Boxes.getTesingResults();
+  _showWorkingDialog('กำลังลบประวัติการทดสอบ');
   await box.clear();
+  _hideWorkingDialog();
   print("clear test result");
+}
+
+_showWorkingDialog(String text) {
+  EasyLoading.show(
+    status: text,
+    maskType: EasyLoadingMaskType.black,
+    dismissOnTap: false,
+  );
+}
+
+_hideWorkingDialog() {
+  if (EasyLoading.isShow) EasyLoading.dismiss();
 }
