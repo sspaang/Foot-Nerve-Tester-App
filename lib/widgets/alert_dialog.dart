@@ -80,6 +80,20 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
     }
   }
 
+  closeNotify() async {
+    List<BluetoothService> services = await widget.device.discoverServices();
+    for (BluetoothService service in services) {
+      if (service.uuid.toString() == serviceUUID) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.uuid.toString() == notifyUUID) {
+            await characteristic.setNotifyValue(false);
+          }
+        }
+      }
+    }
+  }
+
   writeData(int command) async {
     List<BluetoothService> services = await widget.device.discoverServices();
     for (BluetoothService service in services) {
@@ -114,6 +128,7 @@ class _AppAlertDialogState extends State<AppAlertDialog> {
 
   _showSelectTestingResultDialog() {
     print("3. spot on showing function: $spotId");
+    closeNotify();
     if (!Get.isDialogOpen!) _selectTestingResultDialog();
   }
 
