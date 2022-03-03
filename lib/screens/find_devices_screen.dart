@@ -5,6 +5,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import './select_foot_side_screen.dart';
+import './test_result_screen.dart';
 
 import '../widgets/scan_result_tile.dart';
 
@@ -49,6 +50,16 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const TestResultScreen(),
+                    ),
+                  ),
+                  child: const Text("ดูผลการทดสอบ"),
+                ),
+              ),
               StreamBuilder<List<BluetoothDevice>>(
                 stream: Stream.periodic(const Duration(seconds: 2))
                     .asyncMap((_) => FlutterBlue.instance.connectedDevices),
@@ -94,7 +105,8 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                   status: 'กำลังเชื่อมต่อ',
                                   maskType: EasyLoadingMaskType.black,
                                   dismissOnTap: false);
-                              await r.device.connect();
+                              await r.device
+                                  .connect(timeout: const Duration(seconds: 5));
                               EasyLoading.dismiss();
                               Future.delayed(const Duration(seconds: 0), () {
                                 Navigator.of(context).pushReplacement(

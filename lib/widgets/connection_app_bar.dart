@@ -3,6 +3,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import '../screens/find_devices_screen.dart';
+import '../screens/test_result_screen.dart';
 
 class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ConnectionAppBar({Key? key, required this.device}) : super(key: key);
@@ -61,7 +62,7 @@ class ConnectionAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ?.copyWith(color: Colors.black),
                 ));
           },
-        )
+        ),
       ],
     );
   }
