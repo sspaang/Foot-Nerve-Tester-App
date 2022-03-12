@@ -20,11 +20,10 @@ class _TestResultScreenState extends State<TestResultScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('ผลการทดสอบ'),
-          actions: [
-            TextButton.icon(
+          actions: <Widget>[
+            TextButton(
               onPressed: () => clearTestResult(),
-              icon: const Icon(Icons.delete),
-              label: const Text("ลบทั้งหมด"),
+              child: const Text("ลบทั้งหมด"),
             ),
           ],
         ),

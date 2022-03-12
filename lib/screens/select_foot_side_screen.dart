@@ -90,14 +90,14 @@ class SelectFootSideScreen extends StatelessWidget {
               height: 20,
             ),
             const ResultButton(),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "คุณไม่ได้เป็นโรคเบาหวานใช่หรือไม่?",
-              style: TextStyle(fontSize: 16),
-            ),
-            const EvaluateLinkButton(),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // const Text(
+            //   "คุณไม่ได้เป็นโรคเบาหวานใช่หรือไม่?",
+            //   style: TextStyle(fontSize: 16),
+            // ),
+            // const EvaluateLinkButton(),
           ],
         ),
       ),
